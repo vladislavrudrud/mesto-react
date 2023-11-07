@@ -15,3 +15,11 @@
   opacity: .8;
   background-color: #000;
 }
+
+@media screen and (max-width: 900px) {
+  .profile__avatar-button {
+      margin: 0 auto 26px;
+      left: 0;
+      right: 0;
+  }
+}

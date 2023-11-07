@@ -14,20 +14,12 @@ const Main = ({
   const [userAvatar, setUserAvatar] = React.useState("");
   const [cards, setCards] = React.useState([]);
   React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data);
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([userData, cardsData]) => {
+        setUserName(userData.name);
+        setUserDescription(userData.about);
+        setUserAvatar(userData.avatar);
+        setCards(cardsData);
       })
       .catch((err) => {
         console.log(err);
@@ -59,6 +51,7 @@ const Main = ({
         <div className="elements">
           {cards.map((card) => (
             <Card
+              key={card._id}
               onDeleteClick={onDeleteClick}
               onCardClick={onCardClick}
               link={card.link}

@@ -1,4 +1,4 @@
-const Card = ({ onDeleteClick, onCardClick, name, link, likes }) => {
+const Card = ({ id, onDeleteClick, onCardClick, name, link, likes }) => {
   function handleClick() {
     onCardClick({ name, link });
   }
