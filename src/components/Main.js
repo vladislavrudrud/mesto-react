@@ -1,45 +1,37 @@
-import React from "react";
-import api from "../utils/api";
+import React, { useContext } from "react";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Main = ({
+  cards,
   onEditAvatar,
   onEditProfile,
   onAddPlace,
   onCardClick,
   onDeleteClick,
+  onCardLike,
+  onCardDelete,
 }) => {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
-  React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCards(cardsData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const currentUser = useContext(CurrentUserContext);
   return (
     <main className="content">
       <section className="profile">
-        <img className="profile__avatar" src={userAvatar} alt="Аватар" />
+        <img
+          className="profile__avatar"
+          src={currentUser.avatar}
+          alt="Аватар"
+        />
         <button className="profile__avatar-button" onClick={onEditAvatar} />
         <div className="profile__info">
           <div className="profile__edit">
-            <h1 className="profile__author">{userName}</h1>
+            <h1 className="profile__author">{currentUser.name}</h1>
             <button
               className="profile__edit-button"
               type="button"
               onClick={onEditProfile}
             />
           </div>
-          <p className="profile__description">{userDescription}</p>
+          <p className="profile__description">{currentUser.about}</p>
         </div>
         <button
           className="profile__add-button"
@@ -52,8 +44,11 @@ const Main = ({
           {cards.map((card) => (
             <Card
               key={card._id}
+              card={card}
               onDeleteClick={onDeleteClick}
               onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
               link={card.link}
               name={card.name}
               likes={[...card.likes]}

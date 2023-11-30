@@ -36,13 +36,25 @@ class Api {
       })
         .then(res => this._getResponseData(res));
     }
-    likeCard(cardId) {
-      return fetch(`${this._link}/cards/${cardId}/likes`, {
-        method: 'PUT',
-        headers: this._headers
+    // likeCard(cardId) {
+    //   return fetch(`${this._link}/cards/${cardId}/likes`, {
+    //     method: 'PUT',
+    //     headers: this._headers
+    //   })
+    //     .then(res => this._getResponseData(res));
+    // }
+
+    changeLikeCardStatus(cardId, like) {
+      return fetch (`${this._link}/cards/${cardId}/likes`, {
+        method: like ? "PUT" : "DELETE",
+        headers: this._headers,
+        body: JSON.stringify({
+          _id: `${cardId}`
+        }),
       })
-        .then(res => this._getResponseData(res));
+      .then(res => this._getResponseData(res));
     }
+
     removeLikeCard(cardId) {
       return fetch(`${this._link}/cards/${cardId}/likes`, {
         method: 'DELETE',
@@ -61,10 +73,7 @@ class Api {
       return fetch(`${this._link}/users/me`, {
         method: 'PATCH',
         headers: this._headers,
-        body: JSON.stringify({
-          name: data.name,
-          about: data.info
-        })
+        body: JSON.stringify(data)
       })
         .then(res => this._getResponseData(res));
     }
@@ -72,9 +81,7 @@ class Api {
       return fetch(`${this._link}/users/me/avatar`, {
         method: 'PATCH',
         headers: this._headers,
-        body: JSON.stringify({
-          avatar: data.avatar
-        })
+        body: JSON.stringify(data)
       })
         .then(res => this._getResponseData(res));
     }
