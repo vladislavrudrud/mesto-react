@@ -16,7 +16,7 @@ const PopupWithForm = ({
           <h2 className="popup__title">{title}</h2>
           <form
             className="popup__form popup__form_type_profile"
-            name="{name}"
+            name="{${name}-form}" 
             noValidate=""
             onSubmit={onSubmit}
           >
